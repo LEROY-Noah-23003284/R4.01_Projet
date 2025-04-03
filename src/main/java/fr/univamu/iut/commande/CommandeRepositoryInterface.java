@@ -27,12 +27,13 @@ public interface CommandeRepositoryInterface {
 
     /**
      * Méthode mettant à jour la commande
+     * @param id identifiant de la commande
      * @param prix prix de la commande
      * @param numPanier numéro du panier de la commande
      * @param loc localisation du relai
      * @param date date de retrait de la commande
      */
-    public void updateCommande( int numPanier, int prix, String loc, String date );
+    public boolean updateCommande( int id, int numPanier, int prix, String loc, String date );
 
     /**
      * Méthode supprimant la commande

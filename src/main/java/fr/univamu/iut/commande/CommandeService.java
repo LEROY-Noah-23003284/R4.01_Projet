@@ -75,5 +75,17 @@ public class CommandeService {
     public boolean registerCommande(int numPanier, int prix, String loc, String date) {
         return commandeRepo.registerCommande(numPanier, prix, loc, date);
     }
+
+    /**
+     * Méthode permettant de mettre à jour une commande
+     * @param id identifiant de la commande
+     * @param numPanier numéro du panier
+     * @param loc localisation du relai
+     * @param date date de retrait
+     * @return true si la commande a été mise à jour, false sinon
+     */
+    public boolean updateCommande(int id, int numPanier, int prix, String loc, String date) {
+        return commandeRepo.updateCommande(id, numPanier, prix, loc, date);
+    }
 }
 

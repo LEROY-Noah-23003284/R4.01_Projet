@@ -79,4 +79,24 @@ public class CommandeResource {
         else
             return Response.status( Response.Status.CONFLICT ).build();
     }
+
+    /**
+     * Endpoint permettant de mettre à jour une commande
+     * @param id identifiant de la commande
+     * @param numPanier numéro du panier
+     * @param prix prix de la commande
+     * @param loc localisation du relai
+     * @param date date de retrait de la commande
+     * @return un objet Response indiquant "registred" si la commande a été mise à jour ou une erreur "conflict" sinon
+     */
+    @POST
+    @Path("/update")
+    @Consumes("application/x-www-form-urlencoded")
+    public Response updateCommande(@FormParam("id") int id, @FormParam("numPanier") int numPanier, @FormParam("prix") int prix, @FormParam("loc") String loc, @FormParam("date") String date){
+
+        if( service.updateCommande(id, numPanier, prix, loc, date) )
+            return Response.ok("update").build();
+        else
+            return Response.status( Response.Status.CONFLICT ).build();
+    }
 }

@@ -85,8 +85,24 @@ public class CommandeRepositoryMariadb implements CommandeRepositoryInterface{
     }
 
     @Override
-    public void updateCommande(int numPanier, int prix, String loc, String date) {
+    public boolean updateCommande(int id, int numPanier, int prix, String loc, String date) {
+        int nbRowIUpdated = 0;
 
+        String query = "UPDATE Commande SET numPanier=?, prix=?, loc=?, date=? WHERE id=?";
+        try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
+            ps.setInt(1,numPanier);
+            ps.setInt(2,prix);
+            ps.setString(3,loc);
+            ps.setDate(4, Date.valueOf(date));
+            ps.setInt(5, id);
+
+            nbRowIUpdated = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return (nbRowIUpdated != 0);
     }
 
     @Override
