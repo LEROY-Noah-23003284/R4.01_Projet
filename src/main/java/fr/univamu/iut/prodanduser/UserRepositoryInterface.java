@@ -2,35 +2,63 @@ package fr.univamu.iut.prodanduser;
 
 import java.util.ArrayList;
 
+/**
+ * Interface définissant les opérations possibles sur un dépôt d'utilisateurs.
+ */
 public interface UserRepositoryInterface {
+
     /**
-     *  Méthode fermant le dépôt où sont stockées les informations sur les livres
+     * Ferme la connexion au dépôt des utilisateurs.
      */
     public void close();
 
+    /**
+     * Recherche un utilisateur par son adresse email.
+     *
+     * @param mail Adresse email de l'utilisateur (clé primaire).
+     * @return Un objet {@link User} correspondant à l'email fourni, ou null si l'utilisateur n'existe pas.
+     */
+    public User getUser(String mail);
 
     /**
-     * Méthode retournant le livre dont la référence est passée en paramètre
-     * @param mail Clé primaire du User
-     * @return un objet User représentant l'utilisateur recherché
+     * Récupère la liste de tous les utilisateurs.
+     *
+     * @return Une liste contenant tous les utilisateurs.
      */
-    public User getUser( String mail );
+    public ArrayList<User> getAllUsers();
 
     /**
-     * Méthode retournant la liste des utilisateurs
-     * @return une liste d'objets utilisateur
+     * Récupère la liste de tous les utilisateurs ayant un statut administrateur.
+     *
+     * @return Une liste d'objets {@link User} correspondant aux administrateurs.
      */
-    public ArrayList<User> getAllUsers() ;
+    public ArrayList<User> getAllUsersAdmin();
 
     /**
-     * Méthode retournant la liste des utilisateurs
-     * @return une liste d'objets utilisateur administrateurs
+     * Récupère la liste de tous les utilisateurs qui ne sont pas administrateurs.
+     *
+     * @return Une liste d'objets {@link User} correspondant aux utilisateurs non administrateurs.
      */
-    public ArrayList<User> getAllUsersAdmin() ;
+    public ArrayList<User> getAllUsersNonAdmin();
 
     /**
-     * Méthode retournant la liste des utilisateurs
-     * @return une liste d'objets utilisateur non administrateurs
+     * Ajoute un nouvel utilisateur à la base de données.
+     *
+     * @param user L'objet {@link User} représentant l'utilisateur à ajouter.
      */
-    public ArrayList<User> getAllUsersNonAdmin() ;
+    public void createUser(User user);
+
+    /**
+     * Met à jour les informations d'un utilisateur existant.
+     *
+     * @param user L'objet {@link User} contenant les nouvelles informations.
+     */
+    public void updateUser(User user);
+
+    /**
+     * Supprime un utilisateur de la base de données en fonction de son adresse email.
+     *
+     * @param mail L'adresse email de l'utilisateur à supprimer.
+     */
+    public void deleteUser(String mail);
 }

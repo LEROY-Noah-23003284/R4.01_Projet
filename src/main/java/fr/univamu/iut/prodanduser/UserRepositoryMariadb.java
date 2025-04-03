@@ -16,6 +16,9 @@ public class UserRepositoryMariadb implements UserRepositoryInterface, Closeable
      */
     protected Connection dbConnection ;
 
+    /**
+     * Ferme la connexion à la base de données.
+     */
     @Override
     public void close() {
         try{
@@ -27,15 +30,23 @@ public class UserRepositoryMariadb implements UserRepositoryInterface, Closeable
     }
 
     /**
-     * Constructeur de la classe
-     * @param infoConnection chaîne de caractères avec les informations de connexion
-     * @param user chaîne de caractères contenant l'identifiant de connexion à la base de données
-     * @param pwd chaîne de caractères contenant le mot de passe à utiliser
+     * Constructeur de la classe.
+     * @param infoConnection Chaîne contenant les informations de connexion à la base de données.
+     * @param user Identifiant de connexion à la base de données.
+     * @param pwd Mot de passe de connexion à la base de données.
+     * @throws SQLException Si une erreur SQL survient.
+     * @throws ClassNotFoundException Si le driver JDBC n'est pas trouvé.
      */
     public UserRepositoryMariadb(String infoConnection, String user, String pwd ) throws java.sql.SQLException, java.lang.ClassNotFoundException {
         Class.forName("org.mariadb.jdbc.Driver");
         dbConnection = DriverManager.getConnection( infoConnection, user, pwd ) ;
     }
+
+    /**
+     * Recherche un utilisateur par son email.
+     * @param mail Email de l'utilisateur.
+     * @return Un objet {@link User} correspondant ou null si l'utilisateur n'existe pas.
+     */
     @Override
     public User getUser(String mail) {
 
@@ -67,6 +78,10 @@ public class UserRepositoryMariadb implements UserRepositoryInterface, Closeable
         return selectedUser;
     }
 
+    /**
+     * Récupère la liste de tous les utilisateurs.
+     * @return Une liste contenant tous les utilisateurs.
+     */
     @Override
     public ArrayList<User> getAllUsers() {
         ArrayList<User> listUsers ;
@@ -100,6 +115,10 @@ public class UserRepositoryMariadb implements UserRepositoryInterface, Closeable
         return listUsers;
     }
 
+    /**
+     * Récupère la liste des utilisateurs administrateurs.
+     * @return Une liste d'utilisateurs administrateurs.
+     */
     @Override
     public ArrayList<User> getAllUsersAdmin() {
         ArrayList<User> listUsers ;
@@ -132,6 +151,10 @@ public class UserRepositoryMariadb implements UserRepositoryInterface, Closeable
         return listUsers;
     }
 
+    /**
+     * Récupère la liste des utilisateurs non administrateurs.
+     * @return Une liste d'utilisateurs non administrateurs.
+     */
     @Override
     public ArrayList<User> getAllUsersNonAdmin() {
         ArrayList<User> listUsers ;
@@ -163,5 +186,63 @@ public class UserRepositoryMariadb implements UserRepositoryInterface, Closeable
         }
         return listUsers;
     }
+
+    /**
+     * Ajoute un nouvel utilisateur à la base de données.
+     * @param user Utilisateur à ajouter.
+     */
+    @Override
+    public void createUser(User user) {
+        String query = "INSERT INTO User (mail, name, pwd, admin) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
+            ps.setString(1, user.getMail());
+            ps.setString(2, user.getName());
+            ps.setString(3, user.getPwd());
+            ps.setInt(4, user.getAdmin());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la création de l'utilisateur: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Met à jour un utilisateur existant.
+     * @param user Utilisateur avec les nouvelles informations.
+     */
+    @Override
+    public void updateUser(User user) {
+        String query = "UPDATE User SET name=?, pwd=?, admin=? WHERE mail=?";
+
+        try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getPwd());
+            ps.setInt(3, user.getAdmin());
+            ps.setString(4, user.getMail());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la mise à jour de l'utilisateur: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Supprime un utilisateur en fonction de son adresse email.
+     * @param mail Email de l'utilisateur à supprimer.
+     */
+    @Override
+    public void deleteUser(String mail) {
+        String query = "DELETE FROM User WHERE mail=?";
+
+        try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
+            ps.setString(1, mail);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la suppression de l'utilisateur: " + e.getMessage(), e);
+        }
+    }
+
 
 }

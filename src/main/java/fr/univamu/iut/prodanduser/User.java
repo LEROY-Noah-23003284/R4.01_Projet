@@ -1,42 +1,42 @@
 package fr.univamu.iut.prodanduser;
 
 /**
- * Classe représentant un user
+ * Classe représentant un utilisateur du système.
  */
 public class User {
 
     /**
-     * Admin du user
+     * Indique si l'utilisateur est administrateur (1 pour admin, 0 pour utilisateur standard).
      */
     protected int admin;
 
     /**
-     * nom du user
+     * Nom de l'utilisateur.
      */
     protected String name;
 
     /**
-     * Auteurs du user
+     * Mot de passe de l'utilisateur.
      */
     protected String pwd;
 
     /**
-     * Mail du user
-     * ('r' pour réservé, 'e' pour emprunté, et 'd' pour disponible)
+     * Adresse email de l'utilisateur.
      */
     protected String mail;
 
     /**
-     * Constructeur par défaut
+     * Constructeur par défaut.
      */
-    public User(){
+    public User() {
     }
 
     /**
-     * Constructeur de user
-     * @param admin admin du user
-     * @param name nom du user
-     * @param pwd auteurs du user
+     * Constructeur de la classe User.
+     * @param mail Adresse email de l'utilisateur.
+     * @param name Nom de l'utilisateur.
+     * @param admin Statut administrateur (1 pour admin, 0 pour utilisateur standard).
+     * @param pwd Mot de passe de l'utilisateur.
      */
     public User(String mail, String name, int admin, String pwd) {
         this.admin = admin;
@@ -46,76 +46,80 @@ public class User {
     }
 
     /**
-     * Méthode permettant d'accéder à la réference du user
-     * @return un chaîne de caractères avec la admin du user
+     * Obtient le statut administrateur de l'utilisateur.
+     * @return 1 si l'utilisateur est admin, 0 sinon.
      */
     public int getAdmin() {
         return admin;
     }
 
     /**
-     * Méthode permettant d'accéder au nom du user
-     * @return un chaîne de caractères avec le nom du user
+     * Obtient le nom de l'utilisateur.
+     * @return Nom de l'utilisateur.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Méthode permettant d'accéder aux auteurs du user
-     * @return un chaîne de caractères avec la liste des auteurs
+     * Obtient le mot de passe de l'utilisateur.
+     * @return Mot de passe de l'utilisateur.
      */
     public String getPwd() {
         return pwd;
     }
 
     /**
-     * Méthode permettant d'accéder au mail du user
-     * @return un caractère indiquant lestatu du user ('r' pour réservé, 'e' pour emprunté, et 'd' pour disponible)
+     * Obtient l'adresse email de l'utilisateur.
+     * @return Adresse email de l'utilisateur.
      */
     public String getMail() {
         return mail;
     }
 
     /**
-     * Méthode permettant de modifier la admin du user
-     * @param admin une chaîne de caractères avec la admin à utiliser
+     * Définit le statut administrateur de l'utilisateur.
+     * @param admin 1 pour admin, 0 pour utilisateur standard.
      */
     public void setAdmin(int admin) {
         this.admin = admin;
     }
 
     /**
-     * Méthode permettant de modifier le nom du user
-     * @param name une chaîne de caractères avec le nom à utiliser
+     * Définit le nom de l'utilisateur.
+     * @param name Nom de l'utilisateur.
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Méthode permettant de modifier les pwd du user
-     * @param pwd une chaîne de caractères avec la liste des auteurs
+     * Définit le mot de passe de l'utilisateur.
+     * @param pwd Mot de passe de l'utilisateur.
      */
     public void setPwd(String pwd) {
         this.pwd = pwd;
     }
 
     /**
-     * Méthode permettant de modifier le mail du user
-     * @param mail le caractère 'r' pour réservé, 'e' pour emprunté, ou 'd' pour disponible
+     * Définit l'adresse email de l'utilisateur.
+     * @param mail Adresse email de l'utilisateur.
      */
     public void setMail(String mail) {
         this.mail = mail;
     }
 
+    /**
+     * Retourne une représentation textuelle de l'utilisateur.
+     * @return Chaîne de caractères représentant l'utilisateur.
+     */
     @Override
     public String toString() {
         return "User{" +
-                ", mail=" + mail + '\'' +
-                ", nom='" + name + '\'' +
+                "mail='" + mail + '\'' +
+                ", name='" + name + '\'' +
                 ", pwd='" + pwd + '\'' +
-                "admin='" + admin +
-                '}';
+                ", admin='" + admin +
+                "}";
     }
 }
