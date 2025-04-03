@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"fr.univamu.iut.prodanduser"},{"l":"fr.univamu.iut.prodanduser.product"},{"l":"fr.univamu.iut.prodanduser.user"}];updateSearchResults();
