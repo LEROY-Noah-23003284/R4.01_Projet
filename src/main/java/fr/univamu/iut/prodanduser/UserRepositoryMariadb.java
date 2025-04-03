@@ -1,6 +1,4 @@
-package fr.univamu.iut.prodanduser;
-
-import jakarta.enterprise.context.ApplicationScoped;
+package fr.univamu.iut.prodanduser.user;
 
 import java.io.Closeable;
 import java.sql.*;
@@ -10,7 +8,7 @@ import java.util.ArrayList;
  * Classe permettant d'accéder aux utilisateurs stockés dans une base de données MariaDB.
  * Implémente l'interface {@link UserRepositoryInterface} et l'interface {@link Closeable}.
  */
-public class UserRepositoryMariadb implements UserRepositoryInterface, Closeable {
+public class UserRepositoryMariadb implements UserRepositoryInterface, Closeable{
     /**
      * Accès à la base de données (session)
      */

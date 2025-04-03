@@ -1,4 +1,4 @@
-package fr.univamu.iut.prodanduser;
+package fr.univamu.iut.prodanduser.user;
 
 /**
  * Classe représentant un utilisateur du système.

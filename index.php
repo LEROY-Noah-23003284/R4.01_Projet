@@ -5,6 +5,7 @@ include_once 'data/AnnonceSqlAccess.php';
 include_once 'data/UserSqlAccess.php';
 include_once 'data/ApiAlternance.php';
 include_once 'data/ApiEmploi.php';
+include_once 'data/ApiClient.php';
 
 include_once 'control/Controllers.php';
 include_once 'control/Presenter.php';
@@ -171,6 +172,20 @@ else if ( '/index.php/offreEmploi' == $uri && isset($_GET['id'])){
     $vuePostEmploi = new ViewOffreEmploi( $layout, $_SESSION['login'], $presenter);
 
     $vuePostEmploi->display();
+}
+elseif ('/index.php/api-test' == $uri) {
+    $layout = new gui\Layout("gui/layoutLogged.html");
+    $content = "<h2>Réponse de l'API</h2>";
+
+    try {
+        $apiClient = new data\ApiClient();
+        $users = $apiClient->getAllUsers();
+        $content .= "<pre>" . print_r($users, true) . "</pre>";
+    } catch (Exception $e) {
+        $content .= "Erreur: " . $e->getMessage();
+    }
+
+    echo $layout->display("Test API", "", $content);
 }
 else {
     header('Status: 404 Not Found');

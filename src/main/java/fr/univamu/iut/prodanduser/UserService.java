@@ -1,16 +1,24 @@
-package fr.univamu.iut.prodanduser;
+package fr.univamu.iut.prodanduser.user;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+
 import java.util.ArrayList;
 
+/**
+ * Service gérant les opérations liées aux utilisateurs.
+ * Il permet la récupération, la création, la mise à jour et la suppression des utilisateurs.
+ * Les données sont stockées dans un dépôt implémentant {@link UserRepositoryInterface}.
+ */
 @ApplicationScoped
 public class UserService {
 
-    @Inject  // Assurez-vous que UserRepositoryInterface est bien productible
-    private UserRepositoryInterface userRepo;
+    /**
+     * Dépôt utilisé pour accéder aux données des utilisateurs.
+     */
+    protected UserRepositoryInterface userRepo;
 
     /**
      * Constructeur permettant d'injecter l'accès aux données.

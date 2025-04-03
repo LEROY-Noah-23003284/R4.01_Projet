@@ -1,4 +1,4 @@
-package fr.univamu.iut.prodanduser;
+package fr.univamu.iut.prodanduser.user;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -104,5 +104,29 @@ public class UserResource {
     public Response addUser(User user) {
         service.createUser(user);
         return Response.ok("add").build();
+    }
+
+    @POST
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(User user) {
+        User foundUser = service.getUser(user.getMail());
+
+        if (foundUser != null && foundUser.getPwd().equals(user.getPwd())) {
+            return Response.ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .entity(Map.of(
+                    "status", "success",
+                    "user", Map.of(
+                        "mail", foundUser.getMail(),
+                        "name", foundUser.getName()
+                    )
+                )).build();
+        }
+
+        return Response.status(Response.Status.UNAUTHORIZED)
+            .entity(Map.of("status", "error", "message", "Identifiants invalides"))
+            .build();
     }
 }
