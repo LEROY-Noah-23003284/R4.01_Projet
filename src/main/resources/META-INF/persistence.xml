@@ -1,7 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
-             version="3.2">
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.2" xmlns="https://jakarta.ee/xml/ns/persistence">
     <persistence-unit name="default">
-
+        <properties>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:mariadb://mysql-thelu.alwaysdata.net/thelu_pu_db"/>
+            <property name="jakarta.persistence.jdbc.user"
+                      value="thelu_pu"/>
+            <property name="jakarta.persistence.jdbc.password"
+                      value="theluNathan2005"/>
+            <property name="jakarta.persistence.jdbc.driver"
+                      value="org.mariadb.jdbc.Driver"/>
+        </properties>
     </persistence-unit>
 </persistence>

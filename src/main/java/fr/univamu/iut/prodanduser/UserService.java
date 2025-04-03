@@ -4,22 +4,13 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- * Service gérant les opérations liées aux utilisateurs.
- * Il permet la récupération, la création, la mise à jour et la suppression des utilisateurs.
- * Les données sont stockées dans un dépôt implémentant {@link UserRepositoryInterface}.
- */
 @ApplicationScoped
 public class UserService {
 
-    /**
-     * Dépôt utilisé pour accéder aux données des utilisateurs.
-     */
-    protected UserRepositoryInterface userRepo;
+    @Inject  // Assurez-vous que UserRepositoryInterface est bien productible
+    private UserRepositoryInterface userRepo;
 
     /**
      * Constructeur permettant d'injecter l'accès aux données.
