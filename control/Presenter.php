@@ -65,4 +65,8 @@ class Presenter
         }
         return $content;
     }
+    public function getAllAdminUsersJSON()
+    {
+        return json_encode($this->annoncesCheck->getAnnoncesTxt());
+    }
 }

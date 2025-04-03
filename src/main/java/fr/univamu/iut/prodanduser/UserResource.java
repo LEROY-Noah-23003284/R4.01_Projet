@@ -129,4 +129,5 @@ public class UserResource {
             .entity(Map.of("status", "error", "message", "Identifiants invalides"))
             .build();
     }
+
 }

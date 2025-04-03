@@ -187,6 +187,21 @@ elseif ('/index.php/api-test' == $uri) {
 
     echo $layout->display("Test API", "", $content);
 }
+elseif ('/index.php/admin-user' == $uri) {
+    $layout = new gui\Layout("gui/layoutLogged.html");
+    $content = "<h2>Réponse de l'API</h2>";
+
+    try {
+        $apiClient = new data\ApiClient();
+        $users = $apiClient->getAllAdmin();
+        $content .= "<pre>" . print_r($users, true) . "</pre>";
+    } catch (Exception $e) {
+        $content .= "Erreur: " . $e->getMessage();
+    }
+
+    echo $layout->display("Test API", "", $content);
+}
+
 else {
     header('Status: 404 Not Found');
     echo '<html><body><h1>My Page NotFound</h1></body></html>';

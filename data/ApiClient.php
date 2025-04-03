@@ -13,6 +13,10 @@ class ApiClient {
         $response = file_get_contents($this->baseUrl . "/user");
         return json_decode($response, true);
     }
+    public function getAllAdmin() {
+        $response = file_get_contents($this->baseUrl . "/user/admin");
+        return json_decode($response, true);
+    }
 
     public function login($email, $password) {
         $data = json_encode(['mail' => $email, 'pwd' => $password]);
