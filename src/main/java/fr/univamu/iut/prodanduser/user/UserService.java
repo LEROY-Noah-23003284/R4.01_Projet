@@ -1,11 +1,10 @@
-package fr.univamu.iut.prodanduser;
+package fr.univamu.iut.prodanduser.user;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**

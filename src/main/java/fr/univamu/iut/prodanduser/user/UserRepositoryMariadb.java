@@ -1,6 +1,4 @@
-package fr.univamu.iut.prodanduser;
-
-import jakarta.enterprise.context.ApplicationScoped;
+package fr.univamu.iut.prodanduser.user;
 
 import java.io.Closeable;
 import java.sql.*;

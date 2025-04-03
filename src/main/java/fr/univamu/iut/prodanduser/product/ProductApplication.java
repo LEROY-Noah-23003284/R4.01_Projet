@@ -1,4 +1,4 @@
-package fr.univamu.iut.prodanduser;
+package fr.univamu.iut.prodanduser.product;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
@@ -14,19 +14,19 @@ import java.sql.DriverManager;
  */
 @ApplicationPath("/api")
 @ApplicationScoped
-public class UserApplication extends Application {
+public class ProductApplication extends Application {
 
     /**
      * Méthode appelée par le conteneur CDI pour injecter une connexion à la base de données
      * lors de la création des ressources.
      *
-     * @return Une instance de {@link UserRepositoryInterface} permettant d'accéder aux données
+     * @return Une instance de {@link ProductRepositoryInterface} permettant d'accéder aux données
      *         des utilisateurs et de les modifier.
      * @throws IllegalStateException si la connexion à la base de données échoue.
      */
     @Produces
     @ApplicationScoped
-    public UserRepositoryInterface openDbConnection() {
+    public ProductRepositoryInterface openDbConnection() {
         try {
             Class.forName("org.mariadb.jdbc.Driver");
             String url = "jdbc:mariadb://mysql-thelu.alwaysdata.net/thelu_pu_db";
@@ -37,7 +37,7 @@ public class UserApplication extends Application {
             Connection testConn = DriverManager.getConnection(url, user, password);
             testConn.close();
 
-            return new UserRepositoryMariadb(url, user, password);
+            return new ProductRepositoryMariadb(url, user, password);
         } catch (Exception e) {
             throw new IllegalStateException("Échec de connexion à la base de données: " + e.getMessage(), e);
         }
