@@ -41,9 +41,9 @@ public class ProductRepositoryMariadb implements ProductRepositoryInterface, Clo
     }
 
     /**
-     * Recherche un utilisateur par son email.
-     * @param id Email de l'utilisateur.
-     * @return Un objet {@link Product} correspondant ou null si l'utilisateur n'existe pas.
+     * Recherche un produit par son id.
+     * @param id id du produit.
+     * @return Un objet {@link Product} correspondant ou null si le produit n'existe pas.
      */
     @Override
     public Product getProduct(int id) {
@@ -78,8 +78,8 @@ public class ProductRepositoryMariadb implements ProductRepositoryInterface, Clo
     }
 
     /**
-     * Récupère la liste de tous les utilisateurs.
-     * @return Une liste contenant tous les utilisateurs.
+     * Récupère la liste de tous les produits.
+     * @return Une liste contenant tous les produits.
      */
     @Override
     public ArrayList<Product> getAllProducts() {
@@ -116,8 +116,8 @@ public class ProductRepositoryMariadb implements ProductRepositoryInterface, Clo
     }
 
     /**
-     * Ajoute un nouvel utilisateur à la base de données.
-     * @param product Utilisateur à ajouter.
+     * Ajoute un nouveau produit à la base de données.
+     * @param product Produit à ajouter.
      */
     @Override
     public void createProduct(Product product) {
@@ -137,8 +137,8 @@ public class ProductRepositoryMariadb implements ProductRepositoryInterface, Clo
     }
 
     /**
-     * Met à jour un utilisateur existant.
-     * @param product Utilisateur avec les nouvelles informations.
+     * Met à jour un produit existant.
+     * @param product Produit avec les nouvelles informations.
      */
     @Override
     public void updateProduct(Product product) {
@@ -157,8 +157,8 @@ public class ProductRepositoryMariadb implements ProductRepositoryInterface, Clo
     }
 
     /**
-     * Supprime un utilisateur en fonction de son adresse email.
-     * @param id Email de l'utilisateur à supprimer.
+     * Supprime un produit en fonction de son id.
+     * @param id Id du produit à supprimer.
      */
     @Override
     public void deleteProduct(int id) {

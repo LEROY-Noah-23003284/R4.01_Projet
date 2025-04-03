@@ -6,21 +6,26 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
 /**
- * Ressource RESTful pour gérer les utilisateurs.
- * Fournit des endpoints pour récupérer, ajouter, mettre à jour et supprimer des utilisateurs.
+ * Ressource RESTful pour gérer les produits.
+ * Fournit des endpoints pour récupérer, ajouter, mettre à jour et supprimer des produits.
+ * Cette classe utilise l'annotation Jakarta EE pour la gestion des services et des réponses HTTP.
  */
 @Path("/product")
 @ApplicationScoped
 public class ProductResource {
+
     /**
-     * Service utilisé pour accéder aux données des utilisateurs et les manipuler.
+     * Service utilisé pour accéder aux données des produits et les manipuler.
+     * Cette instance est injectée par le conteneur de dépendances de Jakarta.
      */
     @Inject
     private ProductService service;
 
     /**
-     * Endpoint permettant de récupérer tous les utilisateurs enregistrés au format JSON.
-     * @return Une chaîne JSON représentant la liste des utilisateurs.
+     * Endpoint permettant de récupérer tous les produits enregistrés au format JSON.
+     * Ce endpoint envoie une réponse contenant la liste des produits au format JSON.
+     *
+     * @return Une chaîne JSON représentant la liste des produits.
      */
     @GET
     @Produces("application/json")
@@ -29,10 +34,12 @@ public class ProductResource {
     }
 
     /**
-     * Endpoint permettant de récupérer un utilisateur spécifique selon son email.
-     * @param id L'email de l'utilisateur recherché.
-     * @return Une chaîne JSON contenant les informations de l'utilisateur.
-     * @throws NotFoundException Si l'utilisateur n'est pas trouvé.
+     * Endpoint permettant de récupérer un produit spécifique selon son identifiant.
+     * Ce endpoint envoie une réponse contenant les informations du produit au format JSON.
+     *
+     * @param id Identifiant du produit recherché.
+     * @return Une chaîne JSON contenant les informations du produit.
+     * @throws NotFoundException Si le produit n'est pas trouvé dans la base de données.
      */
     @GET
     @Path("{id}")
@@ -46,9 +53,11 @@ public class ProductResource {
     }
 
     /**
-     * Endpoint permettant de mettre à jour un utilisateur existant.
-     * @param product L'objet utilisateur contenant les nouvelles informations.
-     * @return Une réponse HTTP confirmant la mise à jour.
+     * Endpoint permettant de mettre à jour un produit existant.
+     * Ce endpoint reçoit un produit modifié et met à jour ses informations dans la base de données.
+     *
+     * @param product L'objet produit contenant les nouvelles informations.
+     * @return Une réponse HTTP confirmant la mise à jour du produit.
      */
     @PUT
     @Path("/update")
@@ -59,9 +68,11 @@ public class ProductResource {
     }
 
     /**
-     * Endpoint permettant de supprimer un utilisateur existant.
-     * @param product L'objet utilisateur contenant l'email de l'utilisateur à supprimer.
-     * @return Une réponse HTTP confirmant la suppression.
+     * Endpoint permettant de supprimer un produit existant.
+     * Ce endpoint reçoit un produit contenant l'identifiant de celui à supprimer.
+     *
+     * @param product L'objet produit contenant l'identifiant du produit à supprimer.
+     * @return Une réponse HTTP confirmant la suppression du produit.
      */
     @PUT
     @Path("/delete")
@@ -72,9 +83,11 @@ public class ProductResource {
     }
 
     /**
-     * Endpoint permettant d'ajouter un nouvel utilisateur.
-     * @param product L'objet utilisateur à ajouter.
-     * @return Une réponse HTTP confirmant l'ajout.
+     * Endpoint permettant d'ajouter un nouveau produit.
+     * Ce endpoint reçoit un produit et l'ajoute à la base de données.
+     *
+     * @param product L'objet produit à ajouter à la base de données.
+     * @return Une réponse HTTP confirmant l'ajout du produit.
      */
     @POST
     @Path("/add")

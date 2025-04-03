@@ -1,30 +1,33 @@
 package fr.univamu.iut.prodanduser.product;
 
 /**
- * Classe représentant un utilisateur du système.
+ * Classe représentant un produit du système.
  */
 public class Product {
 
     /**
-     * Indique si l'utilisateur est administrateur (1 pour admin, 0 pour utilisateur standard).
+     * Identifiant unique du produit.
      */
     protected int id;
 
     /**
-     * Nom de l'utilisateur.
+     * Nom du produit.
      */
     protected String name;
 
     /**
-     * Mot de passe de l'utilisateur.
+     * Type du produit.
      */
     protected String type;
 
     /**
-     * Adresse email de l'utilisateur.
+     * Saison associée au produit.
      */
     protected String season;
 
+    /**
+     * Prix du produit.
+     */
     protected float price;
 
     /**
@@ -35,10 +38,11 @@ public class Product {
 
     /**
      * Constructeur de la classe Product.
-     * @param season Adresse email de l'utilisateur.
-     * @param name Nom de l'utilisateur.
-     * @param id Statut administrateur (1 pour admin, 0 pour utilisateur standard).
-     * @param type Mot de passe de l'utilisateur.
+     * @param id Identifiant unique du produit.
+     * @param name Nom du produit.
+     * @param type Type du produit.
+     * @param season Saison associée au produit.
+     * @param price Prix du produit.
      */
     public Product(int id, String name, String type, String season, float price) {
         this.id = id;
@@ -49,90 +53,97 @@ public class Product {
     }
 
     /**
-     * Obtient le statut administrateur de l'utilisateur.
-     * @return 1 si l'utilisateur est admin, 0 sinon.
+     * Obtient l'identifiant du produit.
+     * @return Identifiant du produit.
      */
     public int getId() {
         return id;
     }
 
     /**
-     * Obtient le nom de l'utilisateur.
-     * @return Nom de l'utilisateur.
+     * Obtient le nom du produit.
+     * @return Nom du produit.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Obtient le mot de passe de l'utilisateur.
-     * @return Mot de passe de l'utilisateur.
+     * Obtient le type du produit.
+     * @return Type du produit.
      */
     public String getType() {
         return type;
     }
 
     /**
-     * Obtient l'adresse email de l'utilisateur.
-     * @return Adresse email de l'utilisateur.
+     * Obtient la saison associée au produit.
+     * @return Saison du produit.
      */
     public String getSeason() {
         return season;
     }
 
+    /**
+     * Obtient le prix du produit.
+     * @return Prix du produit.
+     */
     public float getPrice() {
         return price;
     }
 
     /**
-     * Définit le statut administrateur de l'utilisateur.
-     * @param id 1 pour id, 0 pour utilisateur standard.
+     * Définit l'identifiant du produit.
+     * @param id Nouvel identifiant du produit.
      */
     public void setId(int id) {
         this.id = id;
     }
 
     /**
-     * Définit le nom de l'utilisateur.
-     * @param name Nom de l'utilisateur.
+     * Définit le nom du produit.
+     * @param name Nouveau nom du produit.
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Définit le mot de passe de l'utilisateur.
-     * @param type Mot de passe de l'utilisateur.
+     * Définit le type du produit.
+     * @param type Nouveau type du produit.
      */
     public void setType(String type) {
         this.type = type;
     }
 
     /**
-     * Définit l'adresse email de l'utilisateur.
-     * @param season Adresse email de l'utilisateur.
+     * Définit la saison du produit.
+     * @param season Nouvelle saison du produit.
      */
     public void setSeason(String season) {
         this.season = season;
     }
 
-
+    /**
+     * Définit le prix du produit.
+     * @param price Nouveau prix du produit.
+     */
     public void setPrice(float price) {
         this.price = price;
     }
 
     /**
-     * Retourne une représentation textuelle de l'utilisateur.
-     * @return Chaîne de caractères représentant l'utilisateur.
+     * Retourne une représentation textuelle du produit.
+     * @return Chaîne de caractères représentant le produit.
      */
     @Override
     public String toString() {
         return "Product{" +
-                "id=" + id + '\'' +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", season='" + season + '\'' +
                 ", price=" + price +
-                "}";
+                '}';
     }
 }
