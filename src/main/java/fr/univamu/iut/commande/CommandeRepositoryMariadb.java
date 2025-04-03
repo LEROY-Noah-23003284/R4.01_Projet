@@ -106,8 +106,20 @@ public class CommandeRepositoryMariadb implements CommandeRepositoryInterface{
     }
 
     @Override
-    public void deleteCommande(int id) {
+    public boolean deleteCommande(int id) {
+        int nbRowDeleted = 0;
 
+        String query = "DELETE FROM Commande WHERE id=?";
+        try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
+            ps.setInt(1, id);
+
+            nbRowDeleted = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return (nbRowDeleted != 0);
     }
 
     @Override

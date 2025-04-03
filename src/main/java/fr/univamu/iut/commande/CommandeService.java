@@ -87,5 +87,9 @@ public class CommandeService {
     public boolean updateCommande(int id, int numPanier, int prix, String loc, String date) {
         return commandeRepo.updateCommande(id, numPanier, prix, loc, date);
     }
+
+    public boolean deleteCommande(int id) {
+        return commandeRepo.deleteCommande(id);
+    }
 }
 

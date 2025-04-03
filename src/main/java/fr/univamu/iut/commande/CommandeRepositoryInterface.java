@@ -32,14 +32,16 @@ public interface CommandeRepositoryInterface {
      * @param numPanier numéro du panier de la commande
      * @param loc localisation du relai
      * @param date date de retrait de la commande
+     * @return true si la commande a été mise à jour, false sinon
      */
     public boolean updateCommande( int id, int numPanier, int prix, String loc, String date );
 
     /**
      * Méthode supprimant la commande
      * @param id identifiant de la commande
+     * @return true si la commande a été supprimée, false sinon
      */
-    public void deleteCommande( int id );
+    public boolean deleteCommande( int id );
 
     /**
      * Méthode retournant la liste des Commandes

@@ -99,4 +99,19 @@ public class CommandeResource {
         else
             return Response.status( Response.Status.CONFLICT ).build();
     }
+
+    /**
+     * Endpoint permettant de supprimer une commande
+     * @param id identifiant de la commande à supprimer
+     * @return un objet Response indiquant "removed" si la commande a été supprimée ou une erreur "not found" sinon
+     */
+    @DELETE
+    @Path("{id}")
+    public Response removeReservation(@PathParam("id") int id){
+
+        if( service.deleteCommande(id) )
+            return Response.ok("removed").build();
+        else
+            return Response.status( Response.Status.NOT_FOUND ).build();
+    }
 }
