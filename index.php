@@ -1,6 +1,17 @@
 <?php
+/**
+ * Point d'entrée principal de l'application web "Annonces".
+ *
+ * Ce fichier initialise les dépendances (modèles, contrôleurs, vues, services, API),
+ * établit la connexion à la base de données,
+ * gère l'authentification utilisateur et la création de compte,
+ * et route les différentes requêtes vers les contrôleurs/vues appropriés.
+ *
+ * @author Nathan
+ * @version 1.0
+ */
 
-// charge et initialise les bibliothèques globales
+// Chargement des bibliothèques nécessaires (modèles, contrôleurs, services, vues, APIs)
 include_once 'data/AnnonceSqlAccess.php';
 include_once 'data/UserSqlAccess.php';
 include_once 'data/ApiAlternance.php';
@@ -25,160 +36,129 @@ include_once 'gui/ViewCompanyAlternance.php';
 include_once 'gui/ViewAnnoncesEmploi.php';
 include_once 'gui/ViewOffreEmploi.php';
 
+// Alias pour un chargement plus lisible des classes
 use gui\{ViewLogin, ViewAnnonces, ViewPost, ViewError, ViewCreate, Layout, ViewAnnoncesAlternance, ViewCompanyAlternance, ViewAnnoncesEmploi, ViewOffreEmploi};
 use control\{Controllers, Presenter};
 use data\{AnnonceSqlAccess, UserSqlAccess, ApiAlternance, ApiEmploi};
 use service\{AnnoncesChecking, UserChecking, UserCreation};
 
+// Connexion à la base de données
 $data = null;
 try {
     $bd = new PDO('mysql:host=mysql-thelu.alwaysdata.net;dbname=thelu_annonces_db', 'thelu_annonces', 'theluNathan2005');
-    // construction du modèle
     $dataAnnonces = new AnnonceSqlAccess($bd);
     $dataUsers = new UserSqlAccess($bd);
-
 } catch (PDOException $e) {
     print "Erreur de connexion !: " . $e->getMessage() . "<br/>";
     die();
 }
 
-// initialisation du controller
+// Initialisation des composants principaux
 $controller = new Controllers();
-
-// intialisation du cas d'utilisation service\AnnoncesChecking
-$annoncesCheck = new AnnoncesChecking() ;
-
-// intialisation du cas d'utilisation service\UserChecking
-$userCheck = new UserChecking() ;
-
-// intialisation du cas d'utilisation service\UserCreation
-$userCreation = new UserCreation() ;
-
-// intialisation du presenter avec accès aux données de AnnoncesCheking
+$annoncesCheck = new AnnoncesChecking();
+$userCheck = new UserChecking();
+$userCreation = new UserCreation();
 $presenter = new Presenter($annoncesCheck);
 
 $apiAlternance = new ApiAlternance();
-
-// initialiser la source de données "API Emploi"
 $apiEmploi = new ApiEmploi();
 
-// chemin de l'URL demandée au navigateur
-// (p.ex. /index.php)
+// Récupération de l'URI demandée
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+// Démarrage de la session si nécessaire
 if (session_status() === PHP_SESSION_NONE) {
-    // définition d'une session d'une heure
     ini_set('session.gc_maxlifetime', 3600);
     session_set_cookie_params(3600);
     session_start();
 }
 
-// Authentification et création du compte (sauf pour le formulaire de connexion et de création de compte)
-if ( '/' != $uri and '/index.php' != $uri and '/index.php/logout' != $uri  and '/index.php/create' != $uri){
-
+// Authentification obligatoire sauf sur certaines pages
+if ($uri !== '/' && $uri !== '/index.php' && $uri !== '/index.php/logout' && $uri !== '/index.php/create') {
     $error = $controller->authenticateAction($userCreation, $userCheck, $dataUsers);
 
-    if( $error != null )
-    {
-        $uri='/index.php/error' ;
-        if( $error == 'bad login or pwd' or $error == 'not connected')
-            $redirect = '/index.php';
+    if ($error !== null) {
+        $uri = '/index.php/error';
 
-        if( $error == 'creation impossible')
+        // Redirection en fonction du type d'erreur
+        if ($error === 'bad login or pwd' || $error === 'not connected') {
+            $redirect = '/index.php';
+        } elseif ($error === 'creation impossible') {
             $redirect = '/index.php/create';
+        }
     }
 }
 
-// route la requête en interne
-// i.e. lance le bon contrôleur en fonction de la requête effectuée
-if ( '/' == $uri || '/index.php' == $uri || '/index.php/logout' == $uri) {
-    // affichage de la page de connexion
+// ROUTAGE des différentes pages
 
+// Page de connexion (ou déconnexion)
+if ($uri === '/' || $uri === '/index.php' || $uri === '/index.php/logout') {
     session_destroy();
-    $layout = new Layout("gui/layout.html" );
-    $vueLogin = new ViewLogin( $layout );
-
+    $layout = new Layout("gui/layout.html");
+    $vueLogin = new ViewLogin($layout);
     $vueLogin->display();
 }
-elseif ( '/index.php/create' == $uri ) {
-    // Affichage du fromulaire de création de compte
-
-    $layout = new Layout("gui/layout.html" );
-    $vueCreate = new ViewCreate( $layout );
-
+// Formulaire de création de compte
+elseif ($uri === '/index.php/create') {
+    $layout = new Layout("gui/layout.html");
+    $vueCreate = new ViewCreate($layout);
     $vueCreate->display();
 }
-elseif ( '/index.php/annonces' == $uri ){
-    // affichage de toutes les annonces
-
+// Liste des annonces depuis la base de données
+elseif ($uri === '/index.php/annonces') {
     $controller->annoncesAction($dataAnnonces, $annoncesCheck);
-
-    $layout = new Layout("gui/layoutLogged.html" );
-    $vueAnnonces= new ViewAnnonces( $layout,  $_SESSION['login'], $presenter);
-
+    $layout = new Layout("gui/layoutLogged.html");
+    $vueAnnonces = new ViewAnnonces($layout, $_SESSION['login'], $presenter);
     $vueAnnonces->display();
 }
-elseif ( '/index.php/post' == $uri
-            && isset($_GET['id'])) {
-    // Affichage d'une annonce
-
+// Détail d'une annonce spécifique
+elseif ($uri === '/index.php/post' && isset($_GET['id'])) {
     $controller->postAction($_GET['id'], $dataAnnonces, $annoncesCheck);
-
-    $layout = new Layout("gui/layoutLogged.html" );
-    $vuePost= new ViewPost( $layout,  $_SESSION['login'], $presenter );
-
+    $layout = new Layout("gui/layoutLogged.html");
+    $vuePost = new ViewPost($layout, $_SESSION['login'], $presenter);
     $vuePost->display();
 }
-elseif ( '/index.php/error' == $uri ){
-    // Affichage d'un message d'erreur
-
-    $layout = new Layout("gui/layout.html" );
-    $vueError = new ViewError( $layout, $error, $redirect );
-
+// Page d'erreur
+elseif ($uri === '/index.php/error') {
+    $layout = new Layout("gui/layout.html");
+    $vueError = new ViewError($layout, $error, $redirect);
     $vueError->display();
 }
-elseif ( '/index.php/annoncesAlternance' == $uri ){
-    // Affichage de toutes les entreprises offrant de l'alternance
-
-  $controller->annoncesAction($apiAlternance, $annoncesCheck);
-
-  $layout = new Layout("gui/layoutLogged.html" );
-  $vueAnnoncesAlternance= new ViewAnnoncesAlternance( $layout,  $_SESSION['login'], $presenter);
-
-  $vueAnnoncesAlternance->display();
-}
-elseif ( '/index.php/companyAlternance' == $uri
-          && isset($_GET['id'])) {
-  // Affichage d'une entreprise offrant de l'alternance
-
-  $controller->postAction($_GET['id'], $apiAlternance, $annoncesCheck);
-
-  $layout = new Layout("gui/layoutLogged.html" );
-  $vuePostAlternance = new ViewCompanyAlternance( $layout,  $_SESSION['login'], $presenter );
-
-  $vuePostAlternance->display();
-}
-else if ( '/index.php/annoncesEmploi' == $uri){
-    $controller->annoncesAction($apiEmploi, $annoncesCheck);
-
+// Annonces d'alternance (depuis API)
+elseif ($uri === '/index.php/annoncesAlternance') {
+    $controller->annoncesAction($apiAlternance, $annoncesCheck);
     $layout = new Layout("gui/layoutLogged.html");
-    $vueAnnoncesEmploi = new ViewAnnoncesEmploi( $layout, $_SESSION['login'], $presenter);
-
+    $vueAnnoncesAlternance = new ViewAnnoncesAlternance($layout, $_SESSION['login'], $presenter);
+    $vueAnnoncesAlternance->display();
+}
+// Détail d'une entreprise d'alternance (depuis API)
+elseif ($uri === '/index.php/companyAlternance' && isset($_GET['id'])) {
+    $controller->postAction($_GET['id'], $apiAlternance, $annoncesCheck);
+    $layout = new Layout("gui/layoutLogged.html");
+    $vuePostAlternance = new ViewCompanyAlternance($layout, $_SESSION['login'], $presenter);
+    $vuePostAlternance->display();
+}
+// Liste des offres d'emploi (depuis API)
+elseif ($uri === '/index.php/annoncesEmploi') {
+    $controller->annoncesAction($apiEmploi, $annoncesCheck);
+    $layout = new Layout("gui/layoutLogged.html");
+    $vueAnnoncesEmploi = new ViewAnnoncesEmploi($layout, $_SESSION['login'], $presenter);
     $vueAnnoncesEmploi->display();
 }
-else if ( '/index.php/offreEmploi' == $uri && isset($_GET['id'])){
+// Détail d'une offre d'emploi (depuis API)
+elseif ($uri === '/index.php/offreEmploi' && isset($_GET['id'])) {
     $controller->postAction($_GET['id'], $apiEmploi, $annoncesCheck);
-
     $layout = new Layout("gui/layoutLogged.html");
-    $vuePostEmploi = new ViewOffreEmploi( $layout, $_SESSION['login'], $presenter);
-
+    $vuePostEmploi = new ViewOffreEmploi($layout, $_SESSION['login'], $presenter);
     $vuePostEmploi->display();
 }
-elseif ('/index.php/api-test' == $uri) {
-    $layout = new gui\Layout("gui/layoutLogged.html");
+// Test d'appel à l'API des utilisateurs
+elseif ($uri === '/index.php/api-test') {
+    $layout = new Layout("gui/layoutLogged.html");
     $content = "<h2>Réponse de l'API</h2>";
 
     try {
-        $apiClient = new data\ApiClient();
+        $apiClient = new \data\ApiClient();
         $users = $apiClient->getAllUsers();
         $content .= "<pre>" . print_r($users, true) . "</pre>";
     } catch (Exception $e) {
@@ -187,12 +167,13 @@ elseif ('/index.php/api-test' == $uri) {
 
     echo $layout->display("Test API", "", $content);
 }
-elseif ('/index.php/admin-user' == $uri) {
-    $layout = new gui\Layout("gui/layoutLogged.html");
+// Test d'appel à l'API pour les admins uniquement
+elseif ($uri === '/index.php/admin-user') {
+    $layout = new Layout("gui/layoutLogged.html");
     $content = "<h2>Réponse de l'API</h2>";
 
     try {
-        $apiClient = new data\ApiClient();
+        $apiClient = new \data\ApiClient();
         $users = $apiClient->getAllAdmin();
         $content .= "<pre>" . print_r($users, true) . "</pre>";
     } catch (Exception $e) {
@@ -201,10 +182,9 @@ elseif ('/index.php/admin-user' == $uri) {
 
     echo $layout->display("Test API", "", $content);
 }
-
+// 404 Not Found pour les chemins inconnus
 else {
     header('Status: 404 Not Found');
     echo '<html><body><h1>My Page NotFound</h1></body></html>';
 }
-
 ?>
