@@ -1,5 +1,7 @@
 package fr.univamu.iut.paniers;
 
+import jakarta.ws.rs.NotFoundException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.sql.Date;
@@ -65,18 +67,23 @@ public class PanierRepositoryMariadb implements PanierRepositoryInterface, AutoC
             stmt.setInt(1, id);
             ResultSet result = stmt.executeQuery();
             if (result.next()) {
-                String name = result.getString("name");
-                Date datdemàj = result.getDate("datdemàj");
-                int price = result.getInt("price");
-                int quantity = result.getInt("quantity");
-                panier = new Panier(name, datdemàj, price, quantity);
-                panier.setId(id);
+                panier = new Panier(
+                        result.getString("name"),
+                        result.getDate("datdemàj"),
+                        result.getInt("price"),
+                        result.getInt("quantity")
+                );
+                panier.setId(result.getInt("id"));
+            } else {
+                throw new NotFoundException("Panier avec ID " + id + " non trouvé.");
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println("Erreur lors de l'accès à la base de données : " + e.getMessage());
+            throw new RuntimeException("Erreur d'accès à la base de données.", e);
         }
         return panier;
     }
+
 
     @Override
     public ArrayList<Panier> getAllPaniers() {

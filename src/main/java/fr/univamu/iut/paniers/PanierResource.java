@@ -27,12 +27,16 @@ public class PanierResource {
     @GET
     @Path("{id}")
     @Produces("application/json")
-    public String getPanier(@PathParam("id") int id) {
+    public Response getPanier(@PathParam("id") int id) {
         String result = service.getPanierJSON(id);
-        if (result == null)
-            throw new NotFoundException();
-        return result;
+        if (result == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Panier avec ID " + id + " non trouvé.")
+                    .build();
+        }
+        return Response.ok(result).build();
     }
+
 
     @POST
     @Consumes("application/json")
