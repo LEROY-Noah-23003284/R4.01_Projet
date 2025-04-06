@@ -2,6 +2,7 @@ package fr.univamu.iut.paniers;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Interface définissant les méthodes pour gérer les paniers dans la base de données.
@@ -58,4 +59,6 @@ public interface PanierRepositoryInterface {
      * @return l'ID du panier
      */
     int getIdPanier(Panier panier);
+
+
 }

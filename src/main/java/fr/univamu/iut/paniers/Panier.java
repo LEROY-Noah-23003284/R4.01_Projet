@@ -3,11 +3,14 @@ package fr.univamu.iut.paniers;
 import java.sql.Date;
 import java.util.Objects;
 
+
 /**
  * Représente un panier dans l'application.
  * Contient les informations de base sur un panier, comme son ID, son nom, la date de demande, le prix et la quantité.
  */
 public class Panier {
+
+    public Panier() {}
 
     protected int id;
     protected String name;

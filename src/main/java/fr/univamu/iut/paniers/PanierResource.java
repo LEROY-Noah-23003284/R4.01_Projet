@@ -5,6 +5,8 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
+
 /**
  * Ressource REST pour gérer les opérations CRUD sur les paniers.
  * Cette classe expose les endpoints pour créer, récupérer, mettre à jour et supprimer des paniers.
@@ -116,4 +118,5 @@ public class PanierResource {
         service.deletePanier(id);
         return Response.status(Response.Status.NO_CONTENT).build();
     }
+
 }

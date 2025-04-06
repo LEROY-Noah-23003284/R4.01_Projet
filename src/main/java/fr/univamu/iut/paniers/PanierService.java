@@ -3,6 +3,7 @@ package fr.univamu.iut.paniers;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Service pour gérer la logique métier des paniers.
@@ -10,6 +11,9 @@ import java.util.ArrayList;
  * Fournit des méthodes pour manipuler ces paniers.
  */
 public class PanierService {
+
+    private static final String API_URL = "http://localhost:8080/prodAndUser-1.0-SNAPSHOT/products";  // URL de ton API Product
+
 
     protected PanierRepositoryInterface panierRepo;
 
@@ -86,4 +90,6 @@ public class PanierService {
     public void deletePanier(int id) {
         panierRepo.deletePanier(id);
     }
+
+
 }

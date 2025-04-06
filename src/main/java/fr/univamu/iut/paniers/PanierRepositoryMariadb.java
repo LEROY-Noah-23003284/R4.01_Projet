@@ -5,6 +5,7 @@ import jakarta.ws.rs.NotFoundException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Implémentation de l'interface PanierRepositoryInterface,
@@ -21,7 +22,7 @@ public class PanierRepositoryMariadb implements PanierRepositoryInterface, AutoC
      * @param infoConnection l'URL de connexion à la base de données
      * @param user le nom d'utilisateur pour la connexion
      * @param password le mot de passe pour la connexion
-     * @throws SQLException si une erreur se produit lors de la connexion à la base de données
+     * @throws SQLException si une erreur se product lors de la connexion à la base de données
      * @throws ClassNotFoundException si la classe du driver JDBC n'est pas trouvée
      */
     public PanierRepositoryMariadb(String infoConnection, String user, String password) throws SQLException, ClassNotFoundException {
@@ -150,4 +151,5 @@ public class PanierRepositoryMariadb implements PanierRepositoryInterface, AutoC
         }
         return -1;
     }
+
 }
